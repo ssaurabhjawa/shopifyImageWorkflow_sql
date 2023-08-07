@@ -4,14 +4,10 @@ import csv
 from extract_file_info_v5 import extract_file_info_v5
 from dotenv import load_dotenv
 
-# # Get the values of the environment variables
-# DB_USERNAME = os.getenv("PGUSER_1")
-# DB_PASSWORD = os.getenv("PGPASSWORD_1")
+
 
 DB_USERNAME = "obljjawa"
 DB_PASSWORD = "ZUtHPbXd5B9L"
-# Load environment variables from .env file
-load_dotenv() 
 
 # Modify the function to use environment variables for username and password
 def establish_connection():
@@ -34,9 +30,26 @@ def get_product_data_by_aspect_ratio(conn, aspect_ratio):
 
         # Prepare the SQL query with placeholders for aspect_ratio
         sql_query = """
-            SELECT ratio, material, frame_type, size, price
+            SELECT *
             FROM product_frame_size_price_50
             WHERE ratio = %s
+            ORDER BY ratio, material,
+                CASE frame_type
+                    WHEN 'Gallery Wrap' THEN 1
+                    WHEN 'White Floating Frame' THEN 2
+                    WHEN 'Black Floating Frame' THEN 3
+                    WHEN 'Golden Floating Frame' THEN 4
+                    WHEN 'White Frame' THEN 6
+                    WHEN 'Black Frame' THEN 7
+                    WHEN 'Brown Frame' THEN 8
+                    WHEN 'White Frame With Mount' THEN 9
+                    WHEN 'Black Frame With Mount' THEN 10
+                    WHEN 'Brown Frame With Mount' THEN 11
+                    WHEN 'Rolled Art' THEN 12
+                    ELSE 13
+            END,
+            CAST(SUBSTRING(size FROM '^[0-9]+') AS INTEGER),
+            size;
             """
 
         # Execute the query passing the aspect_ratio as a tuple in the second argument
@@ -56,7 +69,7 @@ def get_product_data_by_aspect_ratio(conn, aspect_ratio):
 
 
 
-def get_product_info_list(image_filename):
+def get_product_info_list(image_filename, image_url_list):
     # Establish the connection to the PostgreSQL database
     connection = establish_connection()
 
@@ -65,26 +78,36 @@ def get_product_info_list(image_filename):
         file_info = extract_file_info_v5(image_filename)
         aspect_ratio = file_info["aspect_ratio"]
         product_data = get_product_data_by_aspect_ratio(connection, aspect_ratio)
-        artist= file_info["vendor"]
+        print(product_data)
+        artist = file_info["vendor"]
 
         # Transform the product_data into a list of dictionaries
         product_info_list = []
         for i, data_row in enumerate(product_data):
+
+            variant_sku = f"{i + 1}-{file_info['handle']}"
+        
+            # Find the dictionary with matching "Variant SKU" in the image_url_list
+            matching_dict = next((item for item in image_url_list if item["Variant SKU"] == variant_sku), None)
+
             product_info = {
                 "Handle": file_info["handle"],
-                "Option1 Value": data_row[1],   # Material
-                "Option2 Value": data_row[2],   # Frame Type
-                "Option3 Value": data_row[3],   # Size
-                "Variant Price": data_row[4],    # Price
+                "Option1 Value": data_row[2],   # Material
+                "Option2 Value": data_row[3],   # Frame Type
+                "Option3 Value": data_row[4],   # Size
+                "Variant Price": data_row[5],    # Price
                 "Variant Inventory Policy": "deny",
                 "Variant Fulfillment Service": "manual",
-                "Variant SKU": f"{i + 1}-{file_info['handle']}",
-                "Variant Inventory Qty":10,
+                "Variant SKU": variant_sku,
+                "Variant Inventory Qty": 10,
+                "Variant Image": matching_dict["Image URL"] if matching_dict else ""  # Get the image URL from the matching_dict
+                
             }
             product_info_list.append(product_info)
 
+        print(product_info_list)
+
         # Don't forget to close the connection when you're done
         connection.close()
-        print(f"******************{product_info_list}*****************")
 
         return product_info_list
