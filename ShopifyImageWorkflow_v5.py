@@ -524,6 +524,21 @@ def write_csv(images_list):
 from extract_file_info_v5 import extract_file_info_v5
 from create_image_url_list  import create_image_url_list
 from get_product_info import get_product_info_list
+from product_level_dict_v5 import product_level_dictionary
+
+def fill_empty_variant_images(images_list):
+    previous_image_url = ""
+
+    for i in range(len(images_list)):
+        if images_list[i]["Variant Image"] == "":
+            images_list[i]["Variant Image"] = previous_image_url
+        else:
+            previous_image_url = images_list[i]["Variant Image"]
+
+    return images_list
+
+
+
 def process_image(output_folder_path):
     image_url_list = create_image_url_list(output_folder_path)
     images_list = []
@@ -533,10 +548,15 @@ def process_image(output_folder_path):
         file_info = extract_file_info_v5(file_path)
 
         if file_info is not None and filename.endswith((".jpg", ".jpeg", ".png", ".webp")):
-            product_info_list = get_product_info_list(filename, image_url_list)
-            images_list.extend(product_info_list)
-    return images_list
+            image_position = int(file_info["image_position_var"])
+            if image_position == 1:
+                product_info_list = get_product_info_list(filename, image_url_list)
+                product_info_list_0 = product_info_list[0]
+                images_list.append(product_level_dictionary(filename, output_folder_path, product_info_list_0))
+                images_list.extend(product_info_list[1:])
 
+    filled_images_list = fill_empty_variant_images(images_list)
+    return filled_images_list
 
 def process_images():
     images_list = process_image(output_folder_path)
@@ -545,6 +565,157 @@ def process_images():
 
 process_button = tk.Button(root, text="Process Images", command=process_images)
 process_button.grid(row=8, column=2, padx=10, pady=10, sticky='e')
+
+
+#==================================================================
+#                              Process Image Set of 2
+#==================================================================
+from get_product_info_setOf2 import get_product_info_list_setOf2
+
+def process_image_setOf2(output_folder_path):
+    image_url_list = create_image_url_list(output_folder_path)
+    images_list = []
+
+    for filename in os.listdir(output_folder_path):
+        file_path = os.path.join(output_folder_path, filename)
+        file_info = extract_file_info_v5(file_path)
+
+        if file_info is not None and filename.endswith((".jpg", ".jpeg", ".png", ".webp")):
+            image_position = int(file_info["image_position_var"])
+            if image_position == 1:
+                product_info_list = get_product_info_list_setOf2(filename, image_url_list)
+                product_info_list_0 = product_info_list[0]
+                images_list.append(product_level_dictionary(filename, output_folder_path, product_info_list_0))
+                images_list.extend(product_info_list[1:])
+
+    filled_images_list = fill_empty_variant_images(images_list)
+    return filled_images_list
+
+def process_images_setOf2():
+    images_list = process_image_setOf2(output_folder_path)
+    write_csv(images_list)
+
+
+process_button = tk.Button(root, text="Process Images Set Of 2", command=process_images_setOf2)
+process_button.grid(row=9, column=1, padx=10, pady=10, sticky='w')
+
+#==================================================================
+#                              Process Image Set of 3
+#==================================================================
+from get_product_info_setOf3 import get_product_info_list_setOf3
+
+def process_image_setOf3(output_folder_path):
+    image_url_list = create_image_url_list(output_folder_path)
+    images_list = []
+
+    for filename in os.listdir(output_folder_path):
+        file_path = os.path.join(output_folder_path, filename)
+        file_info = extract_file_info_v5(file_path)
+
+        if file_info is not None and filename.endswith((".jpg", ".jpeg", ".png", ".webp")):
+            image_position = int(file_info["image_position_var"])
+            if image_position == 1:
+                product_info_list = get_product_info_list_setOf3(filename, image_url_list)
+                product_info_list_0 = product_info_list[0]
+                images_list.append(product_level_dictionary(filename, output_folder_path, product_info_list_0))
+                images_list.extend(product_info_list[1:])
+
+    filled_images_list = fill_empty_variant_images(images_list)
+    return filled_images_list
+
+def process_images_setOf3():
+    images_list = process_image_setOf3(output_folder_path)
+    write_csv(images_list)
+
+
+process_button = tk.Button(root, text="Process Images Set Of 3", command=process_images_setOf3)
+process_button.grid(row=9, column=1, padx=10, pady=10)
+
+#==================================================================
+#                              Process Image Set of 4
+#==================================================================
+from get_product_info_setOf4 import get_product_info_list_setOf4
+
+def process_image_setOf4(output_folder_path):
+    image_url_list = create_image_url_list(output_folder_path)
+    images_list = []
+
+    for filename in os.listdir(output_folder_path):
+        file_path = os.path.join(output_folder_path, filename)
+        file_info = extract_file_info_v5(file_path)
+
+        if file_info is not None and filename.endswith((".jpg", ".jpeg", ".png", ".webp")):
+            image_position = int(file_info["image_position_var"])
+            if image_position == 1:
+                product_info_list = get_product_info_list_setOf4(filename, image_url_list)
+                product_info_list_0 = product_info_list[0]
+                images_list.append(product_level_dictionary(filename, output_folder_path, product_info_list_0))
+                images_list.extend(product_info_list[1:])
+
+    filled_images_list = fill_empty_variant_images(images_list)
+    return filled_images_list
+
+def process_images_setOf4():
+    images_list = process_image_setOf4(output_folder_path)
+    write_csv(images_list)
+
+
+process_button = tk.Button(root, text="Process Images Set Of 4", command=process_images_setOf4)
+process_button.grid(row=9, column=1, padx=10, pady=10, sticky='e')
+
+
+#==================================================================
+#                   Process WallPaper 
+#==================================================================
+from get_wallPaper_info import get_wallpaper_info_list, wallpaper_level_dictionary
+
+def process_wallpaper(output_folder_path):
+    image_url_list = create_image_url_list(output_folder_path)
+    filled_images_list = []
+
+    for filename in os.listdir(output_folder_path):
+        file_path = os.path.join(output_folder_path, filename)
+        file_info = extract_file_info_v5(file_path)
+
+        if file_info is not None and filename.endswith((".jpg", ".jpeg", ".png", ".webp")):
+            image_position = int(file_info["image_position_var"])
+            if image_position == 1:
+                product_info_list = get_wallpaper_info_list(filename, image_url_list)
+                product_info_list_0 = product_info_list[0]
+                images_list = []
+                images_list.append(wallpaper_level_dictionary(filename, output_folder_path, product_info_list_0))
+                images_list.extend(product_info_list[1:])
+                filled_images_list.extend(fill_empty_variant_images(images_list))
+
+    return filled_images_list
+
+
+def process_wallpapers():
+    images_list = process_wallpaper(output_folder_path)
+    write_csv(images_list)
+
+
+process_button = tk.Button(root, text="Process Wallpaper", command=process_wallpapers)
+process_button.grid(row=8, column=2, padx=10, pady=10)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

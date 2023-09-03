@@ -26,7 +26,9 @@ ArtDictionary = [
     {'Material': 'Premium Luster Paper', 'Frame': 'Rolled Art', 'Image Position': 73}
 ]
 
-dest_dir = r"D:\OBLJJAWA\My Drive\Products"
+dest_dir = r"D:\OBLJJAWA\My Drive\Designers\SwetaWork\Product_Sweta_in-complete"
+# dest_dir = r"C:\Users\Saurabh\Documents\OneBigLoveProducts\Products"
+# dest_dir = r"D:\OBLJJAWA\My Drive\Products"
 
 
 def check_images_with_positions(source_dir, new_image_position):

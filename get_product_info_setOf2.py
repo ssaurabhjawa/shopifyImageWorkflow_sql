@@ -31,7 +31,7 @@ def get_product_data_by_aspect_ratio(conn, aspect_ratio):
         # Prepare the SQL query with placeholders for aspect_ratio
         sql_query = """
             SELECT *
-            FROM product_frame_size_price_50
+            FROM product_frame_size_price_setof2
             WHERE ratio = %s
             ORDER BY ratio, material,
                 CASE frame_type
@@ -69,7 +69,7 @@ def get_product_data_by_aspect_ratio(conn, aspect_ratio):
 
 
 
-def get_product_info_list(image_filename, image_url_list):
+def get_product_info_list_setOf2(image_filename, image_url_list):
     # Establish the connection to the PostgreSQL database
     connection = establish_connection()
 
