@@ -26,6 +26,13 @@ google_products = [
         "Google Shopping / AdWords Labels": "HomeGarden, Decor"
     },
     {
+        "Product": "wallmural",
+        "Product Category":"Home & Garden > Decor > Wallpaper",
+        "Google Shopping / Google Product Category": "2334",
+        "Google Shopping / AdWords Grouping": "Home & Garden > Decor > Wallpaper",
+        "Google Shopping / AdWords Labels": "HomeGarden, Decor"
+    },
+    {
         "Product": "poster",
         "Product Category": "Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork",
         "Google Shopping / Google Product Category": "500044",
@@ -119,7 +126,7 @@ def product_level_dictionary(image_filename, output_folder_path, product_info_li
         "Google Shopping / AdWords Grouping": "",
         "Google Shopping / AdWords Labels": "",
         "Google Shopping / Condition": "new",
-        "Variant Image": "",
+        "Variant Image": get_image_url_from_cloudinary(public_id),  # Use the Cloudinary URL,
         "Variant Weight Unit": "kg",
         "Variant Tax Code": "",
         "Cost per item": "",

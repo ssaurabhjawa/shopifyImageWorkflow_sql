@@ -2,11 +2,12 @@ from extract_file_info_v5 import extract_file_info_v5
 import os
 
 wallpaper_sizes = [
-    {"size": "60x120cm", "ratio": 0.5, "price": 180},
-    {"size": "60x250cm", "ratio": 0.24, "price": 375},
-    {"size": "60x305cm", "ratio": 0.20, "price": 457.5},
-    {"size": "120x250cm", "ratio": 0.48, "price": 750},
-    {"size": "120x305cm", "ratio": 0.39, "price": 915}
+    {"size": "60x120cm", "ratio": 0.5, "price": 60.8},
+    {"size": "60x250cm", "ratio": 0.24, "price": 135.0},
+    {"size": "60x305cm", "ratio": 0.20, "price": 164.7},
+    {"size": "120x250cm", "ratio": 0.48, "price": 270.0},
+    {"size": "120x305cm", "ratio": 0.39, "price": 329.40},
+    {"size": "Wallpaper Installation", "price": 500}
 ]
 
 def get_wallpaper_info_list(image_filename, image_url_list):

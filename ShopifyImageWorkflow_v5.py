@@ -2,15 +2,11 @@ import os
 import csv
 import tkinter as tk
 from tkinter import filedialog, ttk, Listbox, Canvas, NW, END, messagebox
-from PIL import Image, ImageTk
 import csv
 import shutil
-from PIL import Image
 import uuid
 import tkinter.simpledialog
-from dotenv import load_dotenv
 from pricing_dict import artist_royalty_dict
-Image.MAX_IMAGE_PIXELS = 1000000000  # Set the maximum image size limit
 
 
 # Initialize tkinter app
@@ -85,7 +81,7 @@ def show_image(event):
 image_listbox.bind('<<ListboxSelect>>', show_image)
 
 # Define input variables
-product_type_options = ["canvas", "acrylic", "wallpaper", "poster", "notebook", "pre-sketchbook", "greetingcard", "mugs", "stickers","homepageimages"]
+product_type_options = ["canvas", "acrylic", "wallpaper", "poster", "notebook", "pre-sketchbook", "greetingcard", "mugs", "stickers","homepageimages","wallmural"]
 product_type_var = tk.StringVar(root, product_type_options[0])
 
 #==================================================================
@@ -699,15 +695,88 @@ process_button = tk.Button(root, text="Process Wallpaper", command=process_wallp
 process_button.grid(row=8, column=2, padx=10, pady=10)
 
 
+#==================================================================
+#                   Update Product Type
+#==================================================================
+
+def update_product_type():
+    global folder_path_renaming
+
+    # Ask user to select a folder
+    folder_path_renaming = filedialog.askdirectory(title="Select a folder")
+
+    if not folder_path_renaming:
+        messagebox.showerror("Error", "Please select a folder.")
+        return
+
+    # Iterate through each file in the folder and update the product type
+    for file in os.listdir(folder_path_renaming):
+        if file.endswith((".jpg", ".jpeg", ".png", ".webp")):
+            # Remove extension from filename
+            filename_without_ext = os.path.splitext(file)[0]
+            # Get aspect ratio, uuid, product type, title, and artist from the filename
+            filename_parts = filename_without_ext.split("--")
+            aspect_ratio = filename_parts[0]
+            uuid = filename_parts[1]
+            product_type = "new_product_type" # Replace with your new product type
+            title = (filename_parts[3])
+            artist_name = filename_parts[5] # assuming artist name is separated by underscore
+
+            # Create new filename with updated product type
+            ext = os.path.splitext(file)[1]
+            new_filename = f"{aspect_ratio}--{uuid}--{product_type}--{title}--{image_position}--{artist_name}{ext}"
+
+            # Rename file
+            os.rename(os.path.join(folder_path_renaming, file), os.path.join(output_folder_path, new_filename))
+
+
+    # Update file_listbox
+    for file in os.listdir(folder_path_renaming):
+        outbox_listbox.insert(tk.END, file)
+    
+    tk.messagebox.showinfo("Success", f"All files in {folder_path_renaming} have been renamed with new product type.") 
 
 
 
+# Create a button for the function
+button = tk.Button(root, text="Update_Product_type", command=update_product_type)
+button.grid(row=7, column=2, padx=10, pady=10)
 
 
+#==================================================================
+#                   Process Wall Mural 
+#==================================================================
+from get_wallMural_info import wallmural_level_dictionary, get_wallmural_info_list
+
+def process_mural(output_folder_path):
+    image_url_list = create_image_url_list(output_folder_path)
+    filled_images_list = []
+
+    for filename in os.listdir(output_folder_path):
+        file_path = os.path.join(output_folder_path, filename)
+        file_info = extract_file_info_v5(file_path)
+
+        if file_info is not None and filename.endswith((".jpg", ".jpeg", ".png", ".webp")):
+            image_position = int(file_info["image_position_var"])
+            if image_position == 1:
+                product_info_list = get_wallmural_info_list(filename, image_url_list)
+                product_info_list_0 = product_info_list[0]
+                images_list = []
+                images_list.append(wallmural_level_dictionary(filename, output_folder_path, product_info_list_0))
+                images_list.extend(product_info_list[1:])
+                filled_images_list.extend(fill_empty_variant_images(images_list))
+
+    return filled_images_list
 
 
+def process_murals():
+    images_list = process_mural(output_folder_path)
+    write_csv(images_list)
 
 
+process_button = tk.Button(root, text="Process WallMural", command=process_murals)
+
+process_button.grid(row=9, column=2, padx=10, pady=10)
 
 
 

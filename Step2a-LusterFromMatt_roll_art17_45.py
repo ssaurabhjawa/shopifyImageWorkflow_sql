@@ -12,9 +12,9 @@ frame_positions_list = [
 ]
 
 def main():
-    dest_dir = r"D:\OBLJJAWA\My Drive\Designers\SwetaWork\Product_Sweta_completed"
+    # dest_dir = r"D:\OBLJJAWA\My Drive\Designers\SwetaWork\Product_Sweta_completed"
     # dest_dir = r"C:\Users\Saurabh\Documents\OneBigLoveProducts\Products"
-    # dest_dir = r"D:\OBLJJAWA\My Drive\Products"
+    dest_dir = r"D:\OBLJJAWA\My Drive\Products"
 
     frame_positions_list = [
         (17, 45)
