@@ -7,6 +7,9 @@ import shutil
 import uuid
 import tkinter.simpledialog
 from pricing_dict import artist_royalty_dict
+from PIL import Image
+from PIL import ImageTk
+
 
 
 # Initialize tkinter app
