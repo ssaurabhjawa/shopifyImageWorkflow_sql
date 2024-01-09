@@ -3,4 +3,5 @@ artist_royalty_dict = {
     "Artist 2": 1.1,
     "Artist 3": 1.1,
     "OBL Display SS": 1,
+    "Tavleen": 1.2
 }
