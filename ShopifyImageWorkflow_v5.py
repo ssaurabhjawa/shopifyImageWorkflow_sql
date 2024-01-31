@@ -493,19 +493,25 @@ import pathlib
 from datetime import datetime
 import time
 
+import os
+import csv
+from datetime import datetime
+import pathlib
+from tkinter import messagebox  # Assuming you are using Tkinter for the messagebox
 
-def write_csv(images_list):
+def write_csv(images_list, output_folder_path):
     fieldnames = ['Handle', 'Title', 'Body (HTML)', 'Vendor', 'Product Category', 'Type', 'Tags', 'Published', 'Option1 Name', 'Option1 Value', 'Option2 Name', 'Option2 Value', 'Option3 Name', 'Option3 Value', 'Variant SKU', 'Variant Grams', 'Variant Inventory Tracker', 'Variant Inventory Qty', 'Variant Inventory Policy', 'Variant Fulfillment Service', 'Variant Price', 'Variant Compare At Price', 'Variant Requires Shipping', 'Variant Taxable', 'Variant Barcode', 'Image Src', 'Image Position', 'Image Alt Text', 'Gift Card', 'SEO Title', 'SEO Description', 'Google Shopping / Google Product Category', 'Google Shopping / Gender', 'Google Shopping / Age Group', 'Google Shopping / MPN', 'Google Shopping / AdWords Grouping', 'Google Shopping / AdWords Labels', 'Google Shopping / Condition', 'Google Shopping / Custom Product', 'Google Shopping / Custom Label 0', 'Google Shopping / Custom Label 1', 'Google Shopping / Custom Label 2', 'Google Shopping / Custom Label 3', 'Google Shopping / Custom Label 4', 'Variant Image', 'Variant Weight Unit', 'Variant Tax Code', 'Cost per item', 'Included / United Arab Emirates', 'Included / International', 'Price / International', 'Compare At Price / International', 'Status']
+    
     # Create directory for CSV file
     csv_dir = os.path.join(output_folder_path, 'product_csv')
     pathlib.Path(csv_dir).mkdir(parents=True, exist_ok=True)
     
-    # Create filename with current timestamp
+    # Create filename with a valid format (removing invalid characters)
     current_time = datetime.now().strftime("%H_%M_%S")
     csv_filename = f"products_{current_time}.csv"
+    
     csv_path = os.path.join(csv_dir, csv_filename)
 
-    
     with open(csv_path, "w", newline="", encoding='utf-8') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
@@ -515,6 +521,30 @@ def write_csv(images_list):
             writer.writerow(image_dict)
             
     messagebox.showinfo("CSV Generated", "CSV file generated successfully!")
+
+
+
+# def write_csv(images_list):
+#     fieldnames = ['Handle', 'Title', 'Body (HTML)', 'Vendor', 'Product Category', 'Type', 'Tags', 'Published', 'Option1 Name', 'Option1 Value', 'Option2 Name', 'Option2 Value', 'Option3 Name', 'Option3 Value', 'Variant SKU', 'Variant Grams', 'Variant Inventory Tracker', 'Variant Inventory Qty', 'Variant Inventory Policy', 'Variant Fulfillment Service', 'Variant Price', 'Variant Compare At Price', 'Variant Requires Shipping', 'Variant Taxable', 'Variant Barcode', 'Image Src', 'Image Position', 'Image Alt Text', 'Gift Card', 'SEO Title', 'SEO Description', 'Google Shopping / Google Product Category', 'Google Shopping / Gender', 'Google Shopping / Age Group', 'Google Shopping / MPN', 'Google Shopping / AdWords Grouping', 'Google Shopping / AdWords Labels', 'Google Shopping / Condition', 'Google Shopping / Custom Product', 'Google Shopping / Custom Label 0', 'Google Shopping / Custom Label 1', 'Google Shopping / Custom Label 2', 'Google Shopping / Custom Label 3', 'Google Shopping / Custom Label 4', 'Variant Image', 'Variant Weight Unit', 'Variant Tax Code', 'Cost per item', 'Included / United Arab Emirates', 'Included / International', 'Price / International', 'Compare At Price / International', 'Status']
+#     # Create directory for CSV file
+#     csv_dir = os.path.join(output_folder_path, 'product_csv')
+#     pathlib.Path(csv_dir).mkdir(parents=True, exist_ok=True)
+    
+#     # Create filename with current timestamp
+#     current_time = datetime.now().strftime("%H_%M_%S")
+#     csv_filename = f"products_{current_time}.csv"
+#     csv_path = os.path.join(csv_dir, csv_filename)
+
+    
+#     with open(csv_path, "w", newline="", encoding='utf-8') as csvfile:
+#         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+#         writer.writeheader()
+        
+#         for image_dict in images_list:
+#             print(f"**********{image_dict}**********")
+#             writer.writerow(image_dict)
+            
+#     messagebox.showinfo("CSV Generated", "CSV file generated successfully!")
 
 #==================================================================
 #                              Process Image 
@@ -559,7 +589,7 @@ def process_image(output_folder_path):
 
 def process_images():
     images_list = process_image(output_folder_path)
-    write_csv(images_list)
+    write_csv(images_list, output_folder_path)
 
 
 process_button = tk.Button(root, text="Process Images", command=process_images)
@@ -592,7 +622,7 @@ def process_image_setOf2(output_folder_path):
 
 def process_images_setOf2():
     images_list = process_image_setOf2(output_folder_path)
-    write_csv(images_list)
+    write_csv(images_list, output_folder_path)
 
 
 process_button = tk.Button(root, text="Process Images Set Of 2", command=process_images_setOf2)
@@ -624,7 +654,7 @@ def process_image_setOf3(output_folder_path):
 
 def process_images_setOf3():
     images_list = process_image_setOf3(output_folder_path)
-    write_csv(images_list)
+    write_csv(images_list,output_folder_path)
 
 
 process_button = tk.Button(root, text="Process Images Set Of 3", command=process_images_setOf3)
@@ -656,7 +686,7 @@ def process_image_setOf4(output_folder_path):
 
 def process_images_setOf4():
     images_list = process_image_setOf4(output_folder_path)
-    write_csv(images_list)
+    write_csv(images_list,output_folder_path)
 
 
 process_button = tk.Button(root, text="Process Images Set Of 4", command=process_images_setOf4)
@@ -691,7 +721,7 @@ def process_wallpaper(output_folder_path):
 
 def process_wallpapers():
     images_list = process_wallpaper(output_folder_path)
-    write_csv(images_list)
+    write_csv(images_list,output_folder_path)
 
 
 process_button = tk.Button(root, text="Process Wallpaper", command=process_wallpapers)
@@ -774,7 +804,7 @@ def process_mural(output_folder_path):
 
 def process_murals():
     images_list = process_mural(output_folder_path)
-    write_csv(images_list)
+    write_csv(images_list,output_folder_path)
 
 
 process_button = tk.Button(root, text="Process WallMural", command=process_murals)
