@@ -117,9 +117,9 @@ refresh_button.grid(row=1, column=1, padx=5, pady=5, sticky='se')
 #==================================================================
 #                       Segrage Images by Ratio
 #==================================================================
-
-# refresh_button = tk.Button(root, text="Segregate Images", width = 15, command=segregate_images_by_aspect_ratio)
-# refresh_button.grid(row=1, column=1, padx=5, pady=5, sticky='s')
+from segregate_images import segregate_images_by_aspect_ratio
+refresh_button = tk.Button(root, text="Segregate Images", width = 15, command=segregate_images_by_aspect_ratio)
+refresh_button.grid(row=1, column=2, padx=5, pady=5, sticky='s')
 
 
 
@@ -554,6 +554,7 @@ from extract_file_info_v5 import extract_file_info_v5
 from create_image_url_list  import create_image_url_list
 from get_product_info import get_product_info_list
 from product_level_dict_v5 import product_level_dictionary
+from get_product_info_artist import get_product_info_artist
 
 def fill_empty_variant_images(images_list):
     previous_image_url = ""
@@ -566,8 +567,6 @@ def fill_empty_variant_images(images_list):
 
     return images_list
 
-
-
 def process_image(output_folder_path):
     image_url_list = create_image_url_list(output_folder_path)
     images_list = []
@@ -579,13 +578,38 @@ def process_image(output_folder_path):
         if file_info is not None and filename.endswith((".jpg", ".jpeg", ".png", ".webp")):
             image_position = int(file_info["image_position_var"])
             if image_position == 1:
-                product_info_list = get_product_info_list(filename, image_url_list)
+                if file_info["vendor"] not in ["OBL Display", "OBL Display SS"]:
+                    product_info_list = get_product_info_artist(filename, image_url_list)
+                else:
+                    product_info_list = get_product_info_list(filename, image_url_list)
                 product_info_list_0 = product_info_list[0]
                 images_list.append(product_level_dictionary(filename, output_folder_path, product_info_list_0))
                 images_list.extend(product_info_list[1:])
 
     filled_images_list = fill_empty_variant_images(images_list)
     return filled_images_list
+
+
+
+
+# def process_image(output_folder_path):
+#     image_url_list = create_image_url_list(output_folder_path)
+#     images_list = []
+
+#     for filename in os.listdir(output_folder_path):
+#         file_path = os.path.join(output_folder_path, filename)
+#         file_info = extract_file_info_v5(file_path)
+
+#         if file_info is not None and filename.endswith((".jpg", ".jpeg", ".png", ".webp")):
+#             image_position = int(file_info["image_position_var"])
+#             if image_position == 1:
+#                 product_info_list = get_product_info_list(filename, image_url_list)
+#                 product_info_list_0 = product_info_list[0]
+#                 images_list.append(product_level_dictionary(filename, output_folder_path, product_info_list_0))
+#                 images_list.extend(product_info_list[1:])
+
+#     filled_images_list = fill_empty_variant_images(images_list)
+#     return filled_images_list
 
 def process_images():
     images_list = process_image(output_folder_path)
