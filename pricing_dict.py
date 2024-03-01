@@ -6,5 +6,6 @@ artist_royalty_dict = {
     "Sangeeta":1.2,
     "Dhruv":1.2,
     "Tanu":1.2,
-    "Radhika":1.2
+    "Radhika":1.2,
+    "Nerender":1.2
 }
