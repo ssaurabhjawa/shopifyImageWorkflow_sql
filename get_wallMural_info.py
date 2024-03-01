@@ -80,7 +80,7 @@ def wallmural_level_dictionary(image_filename, output_folder_path, product_info_
         "Type": "Wall Mural",
         "Tags": "Miscellaneous",
         "Published": "TRUE",
-        "Option1 Name": "Material",
+        "Option1 Name": "Sizes",
         "Option1 Value": product_info_list["Option1 Value"],
         "Option2 Name": "",
         "Option2 Value":"",
