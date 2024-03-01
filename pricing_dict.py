@@ -3,5 +3,8 @@ artist_royalty_dict = {
     "OBL Display SS": 1,
     "Tavleen": 1.2,
     "Tushar":1.2,
-    "Sangeeta":1.2 
+    "Sangeeta":1.2,
+    "Dhruv":1.2,
+    "Tanu":1.2,
+    "Radhika":1.2
 }
